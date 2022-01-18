@@ -18,3 +18,6 @@ Route::get('/', fn () => redirect()->route('login'));
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::resource('/products', App\Http\Controllers\ProductController::class);
+Route::get('api/products', [App\Http\Controllers\ProductController::class, 'api']);
