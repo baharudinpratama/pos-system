@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -24,12 +25,14 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('main.product.index');
+        $categories = Category::all();
+
+        return view('main.product.index', compact('categories'));
     }
 
     public function api()
     {
-        return datatables()->of(Product::all())->addIndexColumn()->make(true);
+        return json_encode(Product::all());
     }
 
     /**
@@ -52,13 +55,12 @@ class ProductController extends Controller
     {
         $this->validate($request,[
             'name' => ['required', 'max:64'],
+            'category_id' => ['required'],
             'qty' => ['required', 'numeric', 'min:1'],
             'price' => ['required', 'numeric', 'min:0'],
         ]);
 
         Product::create($request->all());
-
-        return redirect('products');
     }
 
     /**
@@ -94,13 +96,12 @@ class ProductController extends Controller
     {
         $this->validate($request,[
             'name' => ['required', 'max:64'],
+            'category_id' => ['required'],
             'qty' => ['required', 'numeric', 'min:1'],
             'price' => ['required', 'numeric', 'min:0'],
         ]);
 
         $product->update($request->all());
-
-        return redirect('products');
     }
 
     /**
@@ -112,7 +113,5 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
-
-        return redirect('products');
     }
 }
