@@ -21,3 +21,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::resource('/products', App\Http\Controllers\ProductController::class);
 Route::get('api/products', [App\Http\Controllers\ProductController::class, 'api']);
+
+Route::resource('/categories', App\Http\Controllers\CategoryController::class);
+Route::get('api/categories', [App\Http\Controllers\CategoryController::class, 'api']);

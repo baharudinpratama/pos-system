@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ config('app.name') }} | Dashboard</title>
+    <title>{{ config('app.name') }}</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -130,6 +130,12 @@
                         <a href="{{ url('products') }}" class="nav-link {{ request()->is('products') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-th-large"></i>
                             <p>Product</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url('categories') }}" class="nav-link {{ request()->is('categories') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-list"></i>
+                            <p>Category</p>
                         </a>
                     </li>
                     <li class="nav-header">MULTI LEVEL EXAMPLE</li>
