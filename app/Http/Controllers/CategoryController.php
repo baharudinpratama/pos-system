@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Yajra\Datatables\Datatables;
 
 class CategoryController extends Controller
 {
@@ -15,7 +14,7 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $categories = Category::latest()->get();
+        $categories = Category::orderBy('name')->get();
         $search = request('search');
 
         if ($search) {
@@ -30,17 +29,22 @@ class CategoryController extends Controller
         return response()->json(Category::all());
     }
 
+    public function create()
+    {
+        return view('main.category.create');
+    }
+
     public function store(Request $request)
     {
         $this->validate($request,[
-            'name' => 'required|unique:categories|max:32',
+            'name' => ['required', 'unique:categories', 'max:32'],
         ]);
 
         $category = new Category;
         $category->name = $request->name;
         $category->save();
 
-        return redirect()->route('categories.index')->with('categoryAdded', 'New category data created succesfully');
+        return redirect()->route('categories.index')->with('categoryAdded', 'New category created successfully');
     }
 
     public function edit(Category $category)
@@ -51,19 +55,19 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $this->validate($request,[
-            'name' => ['required', 'max:64'],
+            'name' => ['required', 'max:32'],
         ]);
 
         $category->name = $request->name;
         $category->save();
 
-        return redirect('categories');
+        return redirect()->route('categories.index')->with('categoryUpdated', 'Category '.$category->name.' updated');
     }
     
     public function destroy(Category $category)
     {
         $category->delete();
 
-        return redirect('categories');
+        return redirect()->route('categories.index')->with('categoryDeleted', 'Category '.$category->name.' deleted');
     }
 }

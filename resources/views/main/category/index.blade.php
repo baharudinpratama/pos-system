@@ -2,17 +2,43 @@
 @section('header', 'Category')
 
 @section('content')
-    <div id="controller" class="row justify-content-center">
+    <div id="controller" class="row">
         <!-- List -->
-        <div class="col-6">
-            <div class="card card-success">
+        <div class="col-12">
+            <div class="card">
+                @if(Session::has('categoryAdded'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ Session::get('categoryAdded') }}
+                    <button type="button" class="btn btn-success btn-sm float-right" data-dismiss="alert">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                @endif
+                @if(Session::has('categoryUpdated'))
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    {{ Session::get('categoryUpdated') }}
+                    <button type="button" class="btn btn-info btn-sm float-right" data-dismiss="alert">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                @endif
+                @if(Session::has('categoryDeleted'))
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    {{ Session::get('categoryDeleted') }}
+                    <button type="button" class="btn btn-warning btn-sm float-right" data-dismiss="alert">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                @endif
                 <div class="card-header">
-                    <h3 class="card-title"><i class="fas fa-list"></i> List of category</h3>
+                    <a class="btn btn-success btn-sm" href="{{ route('categories.create') }}">
+                        <i class="fas fa-plus-circle"></i> Add New Data
+                    </a>
 
                     <div class="card-tools">
-                        <form action="/categories">
-                            <div class="input-group input-group-sm" style="width: 200px;">
-                                <input type="text" name="search" value="{{ $search }}" class="form-control float-right" placeholder="Search name">
+                        <form action="{{ route('categories.index') }}">
+                            <div class="input-group input-group-sm my-auto" style="width: 200px;">
+                                <input type="text" name="search" value="{{ $search }}" class="form-control" placeholder="Search name">
                                 <div class="input-group-append">
                                     <button type="submit" class="btn btn-default">
                                         <i class="fas fa-search"></i>
@@ -23,6 +49,8 @@
                     </div>
                 </div>
                 <!-- /.card-header -->
+
+                <!-- Table -->
                 <div class="card-body table-responsive p-0" style="height: 330px;">
                     <table class="table table-bordered table-head-fixed text-nowrap">
                         <thead>
@@ -52,37 +80,6 @@
                             @endforeach
                         </tbody>
                     </table>
-                </div>
-                <!-- /.card-body -->
-                <div class="card-footer"></div>
-            </div>
-        </div>
-        
-        <!-- Add Form -->
-        <div class="col-6">
-            <div class="card card-success">
-                <div class="card-header">
-                    <h3 class="card-title"><i class="fas fa-plus-square"></i> Add new category</h3>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    @if (session()->has('categoryAdded'))
-                    <div class="alert alert-info" role="alert">
-                        {{ session('categoryAdded') }}
-                    </div>
-                    @endif
-                    <form method="POST" action="{{ route('categories.store') }}">
-                        @csrf
-
-                        <div class="form-group">
-                            <label for="">Name</label>
-                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="" value="{{ old('name') }}" name="name" placeholder="Enter category name">
-                            @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-success">Submit</button>
-                        </div>
-                    </form>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer"></div>
