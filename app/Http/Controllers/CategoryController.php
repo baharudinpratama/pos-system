@@ -4,105 +4,66 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Yajra\Datatables\Datatables;
 
 class CategoryController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        return view('main.category.index');
+        $categories = Category::latest()->get();
+        $search = request('search');
+
+        if ($search) {
+            $categories = Category::where('name', 'like', '%' . request('search') . '%')->orderBy('name')->get();
+        }
+
+        return view('main.category.index', compact('categories', 'search'));
     }
 
     public function api()
     {
-        return datatables()->of(Category::all())->addIndexColumn()->make(true);
+        return response()->json(Category::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $this->validate($request,[
-            'name' => ['required', 'max:64'],
+            'name' => 'required|unique:categories|max:32',
         ]);
 
-        Category::create($request->all());
+        $category = new Category;
+        $category->name = $request->name;
+        $category->save();
+
+        return redirect()->route('categories.index')->with('categoryAdded', 'New category data created succesfully');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Category $category)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Category $category)
     {
-        //
+        return view('main.category.edit', compact('category'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Category $category)
     {
         $this->validate($request,[
             'name' => ['required', 'max:64'],
         ]);
 
-        $category->update($request->all());
-    }
+        $category->name = $request->name;
+        $category->save();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
+        return redirect('categories');
+    }
+    
     public function destroy(Category $category)
     {
         $category->delete();
+
+        return redirect('categories');
     }
 }

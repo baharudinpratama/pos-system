@@ -14,7 +14,7 @@
         </div>
 
         <div class="col-md-2">
-            <button class="btn btn-sm btn-success btn-flat pull-right" @click="addData()"><i class="fas fa-plus-circle"></i>
+            <button class="btn btn-sm btn-primary btn-flat pull-right" @click="addData()"><i class="fas fa-plus-circle"></i>
                 Create New Product
             </button>
         </div>

@@ -32,7 +32,10 @@ class ProductController extends Controller
 
     public function api()
     {
-        return json_encode(Product::all());
+        $products = Product::select('products.*', 'categories.name as category_name')
+                            ->join('categories', 'categories.id', 'products.category_id');
+
+        return json_encode($products);
     }
 
     /**

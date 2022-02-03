@@ -1,105 +1,92 @@
 @extends('layouts.main')
 @section('header', 'Category')
 
-@section('css')
-    <!-- DataTables -->
-    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
-@endsection
-
 @section('content')
-<div id="controller">
-    <div class="row">
+    <div id="controller" class="row justify-content-center">
+        <!-- List -->
         <div class="col-6">
-            <div class="card">
+            <div class="card card-success">
                 <div class="card-header">
-                    <a href="#" @click="addData()" class="btn btn-sm btn-success btn-flat pull-right"><i class="fas fa-plus-circle"></i>
-                        Add Category
-                    </a>
+                    <h3 class="card-title"><i class="fas fa-list"></i> List of category</h3>
+
+                    <div class="card-tools">
+                        <form action="/categories">
+                            <div class="input-group input-group-sm" style="width: 200px;">
+                                <input type="text" name="search" value="{{ $search }}" class="form-control float-right" placeholder="Search name">
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-default">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
                 <!-- /.card-header -->
-                <div class="card-body">
-                    <table id="datatable" class="table table-striped table-bordered table-hover">
+                <div class="card-body table-responsive p-0" style="height: 330px;">
+                    <table class="table table-bordered table-head-fixed text-nowrap">
                         <thead>
-                            <th class="text-center" width="5%">#</th>
-                            <th class="text-center">Name</th>
-                            <th class="text-center">Action</th>
+                            <tr>
+                                <th class="text-center" width="5%">#</th>
+                                <th class="text-center" width="50%">Name</th>
+                                <th class="text-center">Action</th>
+                            </tr>
                         </thead>
+                        <tbody>
+                            @foreach($categories as $key => $category)
+                            <tr>
+                                <td class="text-center">{{ $loop->iteration }}</td>
+                                <td>{{ $category->name }}</td>
+                                <td class="text-center">
+                                    <form method="POST" action="{{ url('categories', ['id' => $category->id]) }}">
+                                        @csrf
+                                        @method('delete')
+
+                                        <a class="btn btn-warning btn-sm text-white" href="{{ url('/categories/'.$category->id.'/edit') }}">
+                                            <i class="fas fa-pencil-alt"></i> Edit
+                                        </a>
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')"><i class="fas fa-trash"></i> Delete</button>
+                                    </form>
+                                </td>   
+                            </tr>
+                            @endforeach
+                        </tbody>
                     </table>
                 </div>
                 <!-- /.card-body -->
+                <div class="card-footer"></div>
             </div>
-            <!-- /.card -->
         </div>
-        <!-- /.col -->
-    </div>
-    <!-- /.row -->
-
-    <div class="modal fade" id="modal-default">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form method="post" :action="actionUrl" autocomplete="off" @submit="submitForm($event, data.id)">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Category</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+        
+        <!-- Add Form -->
+        <div class="col-6">
+            <div class="card card-success">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-plus-square"></i> Add new category</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    @if (session()->has('categoryAdded'))
+                    <div class="alert alert-info" role="alert">
+                        {{ session('categoryAdded') }}
                     </div>
-                    <div class="modal-body">
+                    @endif
+                    <form method="POST" action="{{ route('categories.store') }}">
                         @csrf
 
-                        <input type="hidden" name="_method" value="PUT" v-if="editStatus">
-
                         <div class="form-group">
-                            <label>Name</label>
-                            <input type="text" class="form-control" name="name" :value="data.name" placeholder="Example: Snack" required>
+                            <label for="">Name</label>
+                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="" value="{{ old('name') }}" name="name" placeholder="Enter category name">
+                            @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="submit" class="btn btn-sm btn-flat btn-primary">Save changes</button>
-                    </div>
-                </form>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer"></div>
             </div>
         </div>
     </div>
-</div>
-@endsection
-
-@section('js')
-<!-- DataTables  & Plugins -->
-<script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/jszip/jszip.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/pdfmake/pdfmake.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/pdfmake/vfs_fonts.js') }}"></script>
-<script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
-<!-- Page specific script -->
-<script type="text/javascript">
-    var actionUrl = '{{ url('categories') }}';
-    var apiUrl = '{{ url('api/categories') }}';
-
-    var columns = [
-        {data: 'DT_RowIndex', class: 'text-center', orderable: true},
-        {data: 'name', class: 'text-left', orderable: true},
-        {render: function(index, row, data, meta) {
-            return `
-                <a href="#" class="btn btn-sm btn-flat btn-info" onclick="controller.editData(event, ${meta.row})">
-                    <i class="fas fa-edit"></i> Edit
-                </a>
-                <a href="#" class="btn btn-sm btn-flat btn-danger" onclick="controller.deleteData(event, ${data.id})">
-                    <i class="fas fa-trash"></i> Delete
-                </a>
-            `;
-        }, orderable: false, width: '200px', class: 'text-center'
-        },
-    ];
-</script>
-<script src="{{ asset('js/crud.js') }}"></script>
 @endsection
