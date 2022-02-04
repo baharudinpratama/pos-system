@@ -96,14 +96,14 @@
                         </li>
                         <li class="nav-item">
                             <a href="{{ url('pos') }}" class="nav-link {{ request()->is('pos') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <i class="nav-icon fas fa-calculator"></i>
                                 <p>POS</p>
                             </a>
                         </li>
                         <li class="nav-header">INVENTORY MANAGEMENT</li>
                         <li class="nav-item">
                             <a href="{{ url('products') }}" class="nav-link {{ request()->is('products') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-th-large"></i>
+                                <i class="nav-icon fab fa-dropbox"></i>
                                 <p>Product</p>
                             </a>
                         </li>

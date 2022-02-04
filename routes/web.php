@@ -1,26 +1,29 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PosController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
+// Start
 Route::get('/', fn () => redirect()->route('login'));
 
 Auth::routes();
 
-Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+// Dashboard
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::resource('/products', App\Http\Controllers\ProductController::class);
-Route::get('api/products', [App\Http\Controllers\ProductController::class, 'api']);
+// Product
+Route::resource('/products', ProductController::class);
+Route::get('api/products', [ProductController::class, 'api']);
 
-Route::resource('/categories', App\Http\Controllers\CategoryController::class);
-Route::get('api/categories', [App\Http\Controllers\CategoryController::class, 'api']);
+// Category
+Route::resource('/categories', CategoryController::class);
+Route::get('api/categories', [CategoryController::class, 'api']);
+
+// Pos
+Route::get('/pos', [PosController::class, 'index'])->name('pos');
+Route::post('/pos/order/store', [PosController::class, 'storeOrder']);
+Route::post('/pos/order/confirm-order', [PosController::class, 'confirmOrder']);
+Route::delete('/pos/order/{id}', [PosController::class, 'deleteOrder']);

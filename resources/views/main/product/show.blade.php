@@ -63,7 +63,31 @@
                             Rp. {{ number_format($product->price) }},-
                         </div>
                     </div>
-            </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-4">
+                            Created at
+                        </div>
+                        <div class="col-1 w-10">
+                            :
+                        </div>
+                        <div class="col-7">
+                            {!! date('d-m-Y, H:i:s', strtotime($product->created_at)) !!}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-4">
+                            Last update
+                        </div>
+                        <div class="col-1 w-10">
+                            :
+                        </div>
+                        <div class="col-7">
+                            {!! date('d-m-Y, H:i:s', strtotime($product->updated_at)) !!}
+                        </div>
+                    </div>
+                </div>
                 <div class="card-footer">
                     <div class="row">
                         <div class="col-6">

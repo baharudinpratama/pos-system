@@ -52,7 +52,6 @@
                     <a href="{{ url('products', ['id' => $product->id]) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a>
                 </div>
             </div>
-        
         </div>
         @endforeach
     </div>
