@@ -48,6 +48,12 @@ class ProductController extends Controller
             'image' => ['mimes:jpeg,png,jpg,gif,svg', 'max:2048']
         ]);
 
+        $product = new Product;
+        $product->name = $request->name;
+        $product->category_id = $request->category_id;
+        $product->stock = $request->stock;
+        $product->price = $request->price;
+        
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageNameGenerator = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
@@ -55,21 +61,10 @@ class ProductController extends Controller
             $image->move($imageDestinationPath, $imageNameGenerator);
             $productImage = $imageDestinationPath.$imageNameGenerator;
 
-            $product = new Product;
-            $product->name = $request->name;
-            $product->category_id = $request->category_id;
-            $product->stock = $request->stock;
-            $product->price = $request->price;
             $product->image = $productImage;
-            $product->save();
-        } else {
-            $product = new Product;
-            $product->name = $request->name;
-            $product->category_id = $request->category_id;
-            $product->stock = $request->stock;
-            $product->price = $request->price;
-            $product->save();
         }
+
+        $product->save();
 
         return redirect()->route('products.index')->with('message', 'New product added successfully');
     }
@@ -97,6 +92,11 @@ class ProductController extends Controller
 
         $oldImage = $product->image;
 
+        $product->name = $request->name;
+        $product->category_id = $request->category_id;
+        $product->stock = $request->stock;
+        $product->price = $request->price;
+
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageNameGenerator = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
@@ -104,21 +104,12 @@ class ProductController extends Controller
             $image->move($imageDestinationPath, $imageNameGenerator);
             $productImage = $imageDestinationPath.$imageNameGenerator;
 
-            $product->name = $request->name;
-            $product->category_id = $request->category_id;
-            $product->stock = $request->stock;
-            $product->price = $request->price;
             $product->image = $productImage;
-            $product->save();
 
             unlink($oldImage);
-        } else {
-            $product->name = $request->name;
-            $product->category_id = $request->category_id;
-            $product->stock = $request->stock;
-            $product->price = $request->price;
-            $product->save();
         }
+        
+        $product->save();
 
         return redirect()->route('products.index')->with('message', 'Product '.$product->name.' updated');
     }
@@ -126,11 +117,11 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         if ($product->image != NULL) {
-            $product->delete();
+            
             unlink($product->image);
-        } else {
-            $product->delete();
-        }
+        } 
+
+        $product->delete();
 
         return redirect()->route('products.index')->with('message', 'Product '.$product->name.' deleted');
     }
