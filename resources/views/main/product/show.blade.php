@@ -60,7 +60,7 @@
                             :
                         </div>
                         <div class="col-7">
-                            Rp. {{ number_format($product->price) }},-
+                            Rp. {{ number_format($product->price, '0', '', '.') }},-
                         </div>
                     </div>
                     <hr>

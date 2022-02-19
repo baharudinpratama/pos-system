@@ -100,6 +100,13 @@
                                 <p>POS</p>
                             </a>
                         </li>
+                        <li class="nav-header">TRANSACTION</li>
+                        <li class="nav-item">
+                            <a href="{{ url('transactions') }}" class="nav-link {{ request()->is('transactions') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-comment-dollar"></i>
+                                <p>Transaction</p>
+                            </a>
+                        </li>
                         <li class="nav-header">INVENTORY MANAGEMENT</li>
                         <li class="nav-item">
                             <a href="{{ url('products') }}" class="nav-link {{ request()->is('products') ? 'active' : '' }}">

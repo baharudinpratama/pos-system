@@ -51,8 +51,12 @@ class PosController extends Controller
         return redirect()->route('pos');
     }
 
-    public function confirmOrder()
+    public function confirmOrder(Request $request)
     {
+        $this->validate($request,[
+            'subtotal' => ['required', 'numeric', 'min:1'],
+        ]);
+
         $totalPrice = OrderDetail::sum('subtotal');
         
         $transaction = new Transaction;
@@ -85,5 +89,12 @@ class PosController extends Controller
         }
 
         return redirect()->route('pos')->with('message', 'Transaction done');
+    }
+
+    public function transaction()
+    {
+        $transactions = Transaction::all();
+
+        return view('main.transaction.index', compact('transactions'));
     }
 }

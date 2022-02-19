@@ -27,3 +27,4 @@ Route::get('/pos', [PosController::class, 'index'])->name('pos');
 Route::post('/pos/order/store', [PosController::class, 'storeOrder']);
 Route::post('/pos/order/confirm-order', [PosController::class, 'confirmOrder']);
 Route::delete('/pos/order/{id}', [PosController::class, 'deleteOrder']);
+Route::get('/transactions', [PosController::class, 'transaction']);

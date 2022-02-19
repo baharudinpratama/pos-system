@@ -45,7 +45,7 @@
                 
                 <div class="info-box-content">
                     <span class="info-box-text">{{ $product->name }}</span>
-                    <span class="info-box-number text-sm">Rp. {{ number_format($product->price) }},-</span>
+                    <span class="info-box-number text-sm">Rp. {{ number_format($product->price, '0', '', '.') }},-</span>
                 </div>
 
                 <div class="icon">

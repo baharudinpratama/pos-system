@@ -43,7 +43,7 @@
                                     <td class="text-center">{{ $loop->iteration }}</td>
                                     <td>{{ $orderDetail->product->name }}</td>
                                     <td class="text-center">{{ $orderDetail->quantity }}</td>
-                                    <td>Rp.<span class="float-right">{{ number_format($orderDetail->subtotal) }}</span> </td>
+                                    <td>Rp.<span class="float-right">{{ number_format($orderDetail->subtotal, '0', '', '.') }}</span> </td>
                                     <td class="text-center">
                                         <form method="POST" action="{{ url('/pos/order/'.$orderDetail->id) }}">
                                             @csrf
@@ -65,7 +65,7 @@
                             </div>
                             <div class="col-3">
                                 <div type="text" class="form-control" value="">
-                                    Rp. <span class="float-right">{{ number_format($totalPrice) }}</span>
+                                    Rp. <span class="float-right">{{ number_format($totalPrice, '0', '', '.') }}</span>
                                 </div>
                             </div>
                             <div class="col-2 mx-auto">
