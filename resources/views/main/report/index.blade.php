@@ -1,34 +1,34 @@
 @extends('layouts.main')
-@section('header', 'Transaction')
+@section('header', 'Report')
 
 @section('content')
     <div id="controller" class="row">
         <!-- List -->
-        <div class="col-12">
+        <div class="col-6">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Transaction list</h3>
+                    <form action="">
+                        <input type="date" class="border" name="dateStart" id="" placeholder="yyyy-mm-dd"> -
+                        <input type="date" class="border" name="dateEnd" id="" placeholder="yyyy-mm-dd">
+                        <button type="submit">Search</button>
+                    </form>
                 </div>
                 <!-- /.card-header -->
 
                 <!-- Table -->
-                <div class="card-body table-responsive p-0" style="height: 330px;">
+                <div class="card-body table-responsive p-0">
                     <table class="table table-bordered table-head-fixed text-nowrap">
                         <thead>
                             <tr>
-                                <th class="text-center" width="10%">Date</th>
-                                <th class="text-center">Cashier</th>
+                                <th class="text-center" width="25%">Transactions</th>
                                 <th class="text-center">Total</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($transactions as $key => $transaction)
                             <tr>
-                                <td class="text-center">{!! date('d-m-y', strtotime($transaction->created_at)) !!}</td>
-                                <td>{{ $transaction->cashier }}</td>
-                                <td>Rp. <span class="float-right">{{ number_format($transaction->total, '0', '', '.') }}</span></td>   
+                                <td class="text-center">{{ $transactions }}</td>
+                                <td class="text-center">Rp. {{ number_format($transactionsTotal, '0', '', '.') }},-</td>
                             </tr>
-                            @endforeach
                         </tbody>
                     </table>
                 </div>

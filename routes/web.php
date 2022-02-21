@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PosController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 // Start
@@ -28,3 +29,6 @@ Route::post('/pos/order/store', [PosController::class, 'storeOrder']);
 Route::post('/pos/order/confirm-order', [PosController::class, 'confirmOrder']);
 Route::delete('/pos/order/{id}', [PosController::class, 'deleteOrder']);
 Route::get('/transactions', [PosController::class, 'transaction']);
+
+// Report
+Route::get('/reports', [ReportController::class, 'index'])->name('reports');

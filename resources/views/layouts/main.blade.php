@@ -21,11 +21,7 @@
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
         @yield('css')
-
-        <!-- Vuejs -->
-        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-        <script src="https://unpkg.com/vue/dist/vue.js"></script>
-        <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+        
     </head>
     <body class="hold-transition sidebar-mini layout-fixed">
         <div class="wrapper">
@@ -105,6 +101,12 @@
                             <a href="{{ url('transactions') }}" class="nav-link {{ request()->is('transactions') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-comment-dollar"></i>
                                 <p>Transaction</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('reports') }}" class="nav-link {{ request()->is('reports') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-file"></i>
+                                <p>Reports</p>
                             </a>
                         </li>
                         <li class="nav-header">INVENTORY MANAGEMENT</li>

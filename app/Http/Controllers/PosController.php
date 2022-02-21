@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PosController extends Controller
@@ -53,10 +54,6 @@ class PosController extends Controller
 
     public function confirmOrder(Request $request)
     {
-        $this->validate($request,[
-            'subtotal' => ['required', 'numeric', 'min:1'],
-        ]);
-
         $totalPrice = OrderDetail::sum('subtotal');
         
         $transaction = new Transaction;
@@ -72,8 +69,8 @@ class PosController extends Controller
                 'product_id' => $value->product_id,
                 'quantity' => $value->quantity,
                 'subtotal' => $value->subtotal,
-                'created_at' => \Carbon\carbon::now(),
-                'updated_at' => \Carbon\carbon::now(),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             );
 
             Order::insert($orders);
